@@ -4,7 +4,7 @@ from evaluate_dialogue import evaluate_dialogue_tab
 from dialogue_list import dialogue_list_tab
 from own_dialogue_list import upload_and_evaluate_tab, own_dialogue_list_tab
 
-st.set_page_config(page_title="응급실 대화 생성 TOOL", layout="wide")
+st.set_page_config(page_title="응급실 문진 대화 생성 TOOL", layout="wide")
 
 # 상위 섹션
 section = st.sidebar.radio(

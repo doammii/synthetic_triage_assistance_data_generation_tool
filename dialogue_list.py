@@ -51,6 +51,6 @@ def dialogue_list_tab():
     st.download_button(
         "CSV 파일로 내보내기",
         csv,
-        file_name="응급실_대화_데이터.csv",
+        file_name="생성_응급실_문진_대화_데이터.csv",
         mime="text/csv"
     )
