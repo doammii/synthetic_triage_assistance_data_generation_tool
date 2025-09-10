@@ -19,12 +19,9 @@ def save_own_dialogues(data):
 def update_own_evaluation(idx, ktas, question, realism, evaluator):
     data = st.session_state.get("own_dialogues", [])
     if 0 <= idx < len(data):
-        data[idx]["evaluation"] = {
-            "ktas": ktas,
-            "question": question,
-            "realism": realism,
-            "evaluator": evaluator
-        }
+        if "evaluation" not in data[idx]:
+            data[idx]["evaluation"] = {}
+        data[idx]["evaluation"].update(evaluation_data)
         st.session_state["own_dialogues"] = data
         save_own_dialogues(data)
 
@@ -178,7 +175,7 @@ def upload_and_evaluate_tab():
                 with eval_cols_q_header[1]:
                     st.markdown("**평가**")
 
-                appropriate_ratings = []
+                appropriate_ratings = {} 
                 for i, (q, help_text) in enumerate(appropriateness_questions):
                     question_key = f"appropriate_q_{idx}_{i}"
                     current_rating = entry.get("evaluation", {}).get(question_key, "보통이다")
@@ -195,7 +192,7 @@ def upload_and_evaluate_tab():
                             label_visibility="hidden",
                             horizontal=True
                         )
-                        appropriate_ratings.append(radio_val)
+                        appropriate_ratings[question_key] = radio_val
                 
                 # 대화의 현실성 평가
                 st.markdown("**대화의 현실성**")
@@ -212,7 +209,7 @@ def upload_and_evaluate_tab():
                 with eval_cols_r_header[1]:
                     st.markdown("**평가**")
 
-                realism_ratings = []
+                realism_ratings = {}
                 for i, q in enumerate(realism_questions):
                     question_key = f"realism_q_{idx}_{i}"
                     current_rating = entry.get("evaluation", {}).get(question_key, "보통이다")
@@ -229,7 +226,7 @@ def upload_and_evaluate_tab():
                             label_visibility="hidden",
                             horizontal=True
                         )
-                        realism_ratings.append(radio_val)
+                        realism_ratings[question_key] = radio_val
                     
                 # 평가자 이름
                 evaluator = st.text_input(
