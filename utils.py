@@ -102,15 +102,18 @@ def load_all_dialogues():
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def update_evaluation(idx, ktas, question, realism, evaluator):
+def update_evaluation(idx, ktas, question, realism, evaluator, ratings: dict | None = None):
     data = load_all_dialogues()
     if 0 <= idx < len(data):
-        data[idx]["evaluation"] = {
+        evaluation = {
             "ktas": ktas,
             "question": question,
             "realism": realism,
             "evaluator": evaluator
         }
+        if ratings:
+            evaluation.update(ratings)
+        data[idx]["evaluation"] = evaluation
         with open(DATA_PATH, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
