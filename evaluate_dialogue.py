@@ -36,14 +36,6 @@ def evaluate_dialogue_tab():
             st.markdown("### 평가항목")
             
             with st.form(f"eval_form_{idx}"):
-                # KTAS 레벨의 적절성
-                st.markdown("**KTAS 레벨의 적절성**")
-                ktas_appropriateness = st.selectbox(
-                    "",
-                    options=["Y", "N", "판단 불가"],
-                    index=["Y", "N", "판단 불가"].index(entry.get("evaluation", {}).get("ktas", "판단 불가")),
-                    key=f"ktas_{idx}", label_visibility="hidden"
-                )
 
                 # 대화의 적절성 평가
                 st.markdown("**대화의 적절성**")
@@ -158,7 +150,6 @@ def evaluate_dialogue_tab():
 
                         update_evaluation(
                             idx,
-                            ktas_appropriateness,
                             question_appropriateness_score,
                             dialogue_realism_score,
                             evaluator,

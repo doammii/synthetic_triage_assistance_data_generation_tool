@@ -1,3 +1,4 @@
 .streamlit/
 *.pyc
 .devcontainer/
+data/own_dialogues.json

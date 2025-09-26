@@ -16,11 +16,10 @@ def save_own_dialogues(data):
     with open(OWN_DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-def update_own_evaluation(idx, ktas, question, realism, evaluator, ratings: dict | None = None):
+def update_own_evaluation(idx, question, realism, evaluator, ratings: dict | None = None):
     data = st.session_state.get("own_dialogues", [])
     if 0 <= idx < len(data):
         evaluation = {
-            "ktas": ktas,
             "question": question,
             "realism": realism,
             "evaluator": evaluator
@@ -156,15 +155,6 @@ def upload_and_evaluate_tab():
             st.markdown("### 평가항목")
             
             with st.form(f"own_eval_form_{idx}"):
-                # KTAS 레벨의 적절성 (기존 유지)
-                st.markdown("**KTAS 레벨의 적절성**")
-                ktas_appropriateness = st.selectbox(
-                    "",
-                    options=["Y", "N", "판단 불가"],
-                    index=["Y", "N", "판단 불가"].index(entry.get("evaluation", {}).get("ktas", "판단 불가")),
-                    key=f"own_ktas_{idx}", label_visibility="hidden"
-                )
-
                 # 대화의 적절성 평가
                 st.markdown("**대화의 적절성**")
                 appropriateness_questions = [
@@ -276,7 +266,6 @@ def upload_and_evaluate_tab():
 
                         update_own_evaluation(
                             idx,
-                            ktas_appropriateness,
                             question_appropriateness_score,
                             dialogue_realism_score,
                             evaluator,
@@ -314,7 +303,6 @@ def own_dialogue_list_tab():
             "대화 출처": "자체",
             "대화": conv_str,
             "평가자": evals.get("evaluator", ""),
-            "KTAS 레벨의 적절성": evals.get("ktas", ""),
             "대화의 적절성": evals.get("question", ""),
             "대화의 현실성": evals.get("realism", ""),
             "삭제": False
